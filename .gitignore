@@ -1,0 +1,6 @@
+.env
+.idea
+__pycache__
+bot.db
+graph.png
+identifier.sqlite
