@@ -4,6 +4,7 @@ from datetime import datetime
 import exchange_rates as ratesio
 import bot_db as db
 from matplotlib import pyplot as plt
+from io import BytesIO
 
 TOKEN = os.getenv('TOKEN')
 bot = telebot.TeleBot(TOKEN)
@@ -92,14 +93,13 @@ def history_message(message):
             plt.plot(range(1, len(values) + 1), values)
             plt.ylabel(currency)
             plt.xlabel('last 7 days')
-            plt.savefig('graph.png')
-            with open('graph.png', mode='rb') as f:
-                bot.send_photo(message.chat.id, photo=f)
+            with BytesIO() as output:
+                plt.savefig(output)
+                bot.send_photo(message.chat.id, photo=output.getvalue())
     except ValueError:
         bot.send_message(message.chat.id, text=f'Wrong command :(')
     except KeyError:
         bot.send_message(message.chat.id, text=f'Wrong command :(')
-
 
 
 @bot.message_handler(commands=['help'])
