@@ -31,10 +31,10 @@ def init_db(conn, force=False):
 def save_rates(conn, rates):
     cursor = conn.cursor()
     cursor.execute('DELETE FROM exchange_rates')
-    for currency in rates:
+    for currency, rate in rates.items():
         cursor.execute(
             'INSERT INTO exchange_rates (currency, rate) VALUES (?, ?)',
-            (currency, round(float(rates[currency]), 2))
+            (currency, round(float(rate), 2))
         )
 
 
